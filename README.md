@@ -1,4 +1,4 @@
-# QuetzalMX Objective-C Style Guide
+# QuetzalMX's Objective-C Style Guide
 
 This style guide outlines the coding conventions of @olivaresf and QuetzalMX. It is meant to be a subjective view of how we think Objective-C should be styled. Its source is, obviously, The New York Times' style guide.
 
@@ -61,20 +61,20 @@ UIApplication.sharedApplication.delegate;
 ```objc
 if (user.isHappy) 
 {
-    // Do something
+    //Do something
 }
 else 
 {
-    // Do something else
+    //Do something else
 }
 
 [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     //code
- }]
+}];
 
 ```
 * There should be exactly one blank line between methods to aid in visual clarity and organization.
-* Whitespace within methods should be used to separate functionality (though often this can indicate an opportunity to split the method into several, smaller methods). In methods with long or verbose names, a single line of whitespace may be used to provide visual separation before the method’s body.
+* Whitespace within methods should be used to separate functionality (though often this can indicate an opportunity to split the method into several, smaller methods iff that code is used in two different places). In methods with long or verbose names, a single line of whitespace may be used to provide visual separation before the method’s body.
 * `@synthesize` and `@dynamic` should each be declared on new lines in the implementation.
 
 ## Conditionals
@@ -83,25 +83,25 @@ Conditional bodies should always use braces even when a conditional body could b
 
 **For example:**
 ```objc
-if (!error) 
+if (conditional) 
 {
-    return success;
+    //One line of code.
 }
 ```
 
 **Not:**
 ```objc
-if (!error)
-    return success;
+if (conditional)
+    //One line of code.
 ```
 
 or
 
 ```objc
-if (!error) return success;
+if (conditional) //One line of code.
 ```
-
-Conditionals will always add complexity to your code (as they are innately bisecting it or worse). In this case, Occam's Razor should be applied so that the leftmost part of the code is always the most common. This is also known as returning early and often.
+### Conditional Logic
+Conditionals will always add complexity to your code (as they are inherently bisecting it or worse). In this case, Occam's Razor should be applied so that the leftmost part of the code is always the most common. This is also known as returning early and often.
 
 **For example:**
 ```objc
@@ -142,7 +142,7 @@ When methods return an error parameter by reference, switch on the returned valu
 NSError *error;
 if (![self trySomethingWithError:&error]) 
 {
-    // Handle Error
+    //Handle Error
 }
 ```
 
@@ -152,7 +152,7 @@ NSError *error;
 [self trySomethingWithError:&error];
 if (error) 
 {
-    // Handle Error
+    //Handle Error
 }
 ```
 
@@ -176,6 +176,7 @@ In method signatures, there should be a space after the scope (`-` or `+` symbol
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 ```
 
+### Method Implementation
 Method implementations should always end with a semicolon. This allows for copying and pasting between .h and.m files to be quick, easy and less error-prone.
 
 **For example, in class.m:**
@@ -235,6 +236,8 @@ Property definitions should be used in place of naked instance variables wheneve
 #### Variable Qualifiers
 
 When it comes to the variable qualifiers [introduced with ARC](https://developer.apple.com/library/ios/releasenotes/objectivec/rn-transitioningtoarc/Introduction/Introduction.html#//apple_ref/doc/uid/TP40011226-CH1-SW4), the qualifier (`__strong`, `__weak`, `__unsafe_unretained`, `__autoreleasing`) should be placed between the asterisks and the variable name, e.g., `NSString * __weak text`. 
+
+The need for `__unsafe_unretained` is very, very, very low. In general, avoid it at all costs. It is inherently unsaf/e.
 
 ## Naming
 
@@ -307,6 +310,19 @@ Categories may be used to concisely segment functionality and should be named to
 When they are needed, comments should be used to explain **why** a particular piece of code does something. Any comments that are used must be kept up-to-date or deleted.
 
 Block comments should generally be avoided, as code should be as self-documenting as possible, with only the need for intermittent, few-line explanations. This does not apply to those comments used to generate documentation.
+
+Comments should not start with a space between the slashes and the comment itself. If the comment is very long, do not start new lines. Let the compiler do the wrapping for you.
+
+**For example:**
+
+```objc
+//My length comment that wraps around because my compiler helps me.
+```
+
+**Not:**
+```objc
+// My comment.
+```
 
 ## init and dealloc
 
@@ -470,7 +486,7 @@ if (aBoolean)
 **Not:**
 
 ```objc
-if (aBoolean == YES) // Never do this.
+if (aBoolean == YES) //Never do this.
 ```
 
 If the name of a `BOOL` property is expressed as an adjective, the property’s name can omit the `is` prefix but should specify the conventional name for the getter.
@@ -508,13 +524,13 @@ If there is more than one import statement, group the statements [together](http
 Note: For modules use the [@import](http://clang.llvm.org/docs/Modules.html#using-modules) syntax.
 
 ```objc
-// Frameworks
+//Frameworks
 @import QuartzCore;
 
-// Models
+//Models
 #import "NYTUser.h"
 
-// Views
+//Views
 #import "NYTButton.h"
 #import "NYTUserView.h"
 ```
