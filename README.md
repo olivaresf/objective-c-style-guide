@@ -29,7 +29,7 @@ Here are some of the documents from Apple that informed the style guide. If some
 * [Constants](#constants)
 * [Enumerated Types](#enumerated-types)
 * [Bitmasks](#bitmasks)
-* [Private Properties](#private-properties)
+* [Properties](#properties)
 * [Image Naming](#image-naming)
 * [Booleans](#booleans)
 * [Singletons](#singletons)
@@ -439,18 +439,19 @@ typedef NS_OPTIONS(NSUInteger, NYTAdCategory) {
 };
 ```
 
-## Private Properties
+## Properties
 
-Private properties should be declared in class extensions (anonymous categories) in the implementation file of a class.
+Public properties should be readonly unless absolutely necessary. Private properties, then, should be declared in class extensions (anonymous categories) in the implementation file of a class and should use readwrite as a modifier. NSStrings, NSArrays and NSDictionaries should always use copy instead of strong, due to issues with mutability.
 
-**For example:**
+**For example, in NYTAdvertisement.m:**
 
 ```objc
 @interface NYTAdvertisement ()
 
-@property (nonatomic, strong) GADBannerView *googleAdView;
-@property (nonatomic, strong) ADBannerView *iAdView;
-@property (nonatomic, strong) UIWebView *adXWebView;
+@property (nonatomic, copy, readwrite) NSString *advertisementID;
+@property (nonatomic, strong, readwrite) GADBannerView *googleAdView;
+@property (nonatomic, strong, readwrite) ADBannerView *iAdView;
+@property (nonatomic, strong, readwrite) UIWebView *adXWebView;
 
 @end
 ```
